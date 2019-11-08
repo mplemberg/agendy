@@ -1,0 +1,14 @@
+components
+    agendas
+        agenda
+        outline
+        outlineItem
+context
+    agendas
+        agendasContext
+        agendasReducer
+        AgendasState
+    
+
+
+    

@@ -10,26 +10,36 @@ import NotFound from "./components/pages/NotFound";
 import GithubState from "./context/github/GithubState";
 import AlertState from "./context/alert/AlertState";
 
+//Agendas
+import Agenda from "./components/agendas/Agenda";
+import AgendasState from "./context/agendas/AgendasState";
 //import "./App.css";
 import "./App.scss";
 const App = () => {
   return (
     <GithubState>
       <AlertState>
-        <Router>
-          <div className='App'>
-            <Navbar />
-            <div className='container'>
-              <Alert alert={alert} />
-              <Switch>
-                <Route exact path='/' component={Home} />
-                <Route exact path='/about' component={About} />
-                <Route exact path='/user/:login' component={User} />
-                <Route component={NotFound} />
-              </Switch>
+        <AgendasState>
+          <Router>
+            <div className='App'>
+              <Navbar />
+              <div className='container'>
+                <div className='row'>
+                  <div className='col'>
+                    <Alert alert={alert} />
+                    <Switch>
+                      <Route exact path='/' component={Home} />
+                      <Route exact path='/about' component={About} />
+                      <Route exact path='/user/:login' component={User} />
+                      <Route exact path='/agenda/:id' component={Agenda} />
+                      <Route component={NotFound} />
+                    </Switch>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </Router>
+          </Router>
+        </AgendasState>
       </AlertState>
     </GithubState>
   );

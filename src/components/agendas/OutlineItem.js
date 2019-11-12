@@ -1,47 +1,44 @@
 import React, { useContext } from "react";
 import AgendasContext from "../../context/agendas/agendasContext";
-
+import HighlightOutlineItem from "./HighlightOutlineItem";
+import EditOutlineItem from "./EditOutlineItem";
+import DisplayOutlineItem from "./DisplayOutlineItem";
 const OutlineItem = ({ item }) => {
   const agendasContext = useContext(AgendasContext);
 
-  const { setOutlineItemMode } = agendasContext;
+  const {
+    setActiveItem,
+    isEditingMode,
+    isHighlightingItem,
+    isEditingItem
+  } = agendasContext;
 
   const mouseEnter = () => {
-    setOutlineItemMode(item.id, "highlighted");
+    setActiveItem(item.id, "highlighting");
   };
 
   const mouseLeave = () => {
-    setOutlineItemMode(item.id, null);
+    if (!isEditingMode()) {
+      setActiveItem(null, null);
+    }
   };
 
   const handleClick = () => {
-    setOutlineItemMode(item.id, "editing");
+    setActiveItem(item.id, "editing");
   };
 
-  const staticItem = <div> &bull; {item.label} </div>;
-  const highlightedItem = (
-    <div className='font-weight-bold p-2 border'> {item.label} </div>
-  );
+  let content = <DisplayOutlineItem item={item} />;
+  if (isHighlightingItem(item.id)) {
+    content = <HighlightOutlineItem item={item} />;
+  } else if (isEditingItem(item.id)) {
+    content = <EditOutlineItem item={item} />;
+  }
 
-  const editingItem = (
-    <input
-      type='text'
-      className='form-control'
-      id='staticEmail'
-      value={item.label}
-    />
-  );
-
-  let content;
-  switch (item.mode) {
-    case "highlighted":
-      content = highlightedItem;
-      break;
-    case "editing":
-      content = editingItem;
-      break;
-    default:
-      content = staticItem;
+  let margin = "";
+  if (item.indent && item.indent === 1) {
+    margin = "ml-3";
+  } else if (item.indent && item.indent === 2) {
+    margin = "ml-5";
   }
 
   return (
@@ -49,6 +46,7 @@ const OutlineItem = ({ item }) => {
       onMouseEnter={mouseEnter}
       onMouseLeave={mouseLeave}
       onClick={handleClick}
+      className={margin}
     >
       {content}
     </div>

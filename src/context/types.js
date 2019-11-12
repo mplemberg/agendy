@@ -9,4 +9,5 @@ export const REMOVE_ALERT = "REMOVE_ALERT";
 //Agendas
 export const SET_LOADING = "SET_LOADING";
 export const LOAD_AGENDA = "LOAD_AGENDA";
-export const SET_OUTLINE_ITEM_MODE = "SET_OUTLINE_ITEM_MODE";
+export const SET_ACTIVE_ITEM = "SET_ACTIVE_ITEM";
+export const SET_ITEM_PROPERTY = "SET_ITEM_INDENT";

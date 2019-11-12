@@ -5,11 +5,12 @@ import AgendasContext from "../../context/agendas/agendasContext";
 const Outline = () => {
   const agendasContext = useContext(AgendasContext);
   const {
-    agenda: { outline: items }
+    agenda: { outline }
   } = agendasContext;
   return (
     <div>
-      {items && items.map(item => <OutlineItem key={item.id} item={item} />)}
+      {outline.items &&
+        outline.items.map(item => <OutlineItem key={item.id} item={item} />)}
     </div>
   );
 };

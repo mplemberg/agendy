@@ -1,4 +1,9 @@
-import { SET_LOADING, LOAD_AGENDA, SET_OUTLINE_ITEM_MODE } from "../types";
+import {
+  SET_LOADING,
+  LOAD_AGENDA,
+  SET_ACTIVE_ITEM,
+  SET_ITEM_PROPERTY
+} from "../types";
 
 export default (state, action) => {
   let item = null;
@@ -14,9 +19,20 @@ export default (state, action) => {
         ...state,
         loading: true
       };
-    case SET_OUTLINE_ITEM_MODE:
-      item = state.agenda.outline.find(i => i.id === action.payload.itemId);
-      item.mode = action.payload.mode;
+    case SET_ACTIVE_ITEM:
+      let agenda = {
+        ...state.agenda
+      };
+      agenda.outline.activeItem = action.payload;
+      return {
+        ...state,
+        agenda
+      };
+    case SET_ITEM_PROPERTY:
+      item = state.agenda.outline.items.find(i => {
+        return i.id === action.payload.id;
+      });
+      item[action.payload.property] = action.payload.value;
       return {
         ...state
       };

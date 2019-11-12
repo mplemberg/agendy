@@ -6,7 +6,9 @@ import {
   LOAD_AGENDA,
   SET_ACTIVE_ITEM,
   SET_ITEM_PROPERTY,
-  SET_OUTLINE_ITEMS
+  SET_OUTLINE_ITEMS,
+  REMOVE_OUTLINE_ITEM,
+  ADD_OUTLINE_ITEM
 } from "../types";
 
 const AgendasState = props => {
@@ -28,7 +30,7 @@ const AgendasState = props => {
 
   const {
     agenda: { outline }
-  } = state;
+  } = { ...state };
   const loadAgenda = async agendaId => {
     setLoading();
     //mock api
@@ -113,24 +115,23 @@ const AgendasState = props => {
   const moveItemUp = item => {
     const from = outline.items.indexOf(item);
     const to = from - 1;
-    const items = [...outline.items];
-    items.splice(to, 0, items.splice(from, 1)[0]);
+    outline.items.splice(to, 0, outline.items.splice(from, 1)[0]);
 
     dispatch({
       type: SET_OUTLINE_ITEMS,
-      payload: items
+      payload: outline.items
     });
   };
 
   const moveItemDown = item => {
     const from = outline.items.indexOf(item);
     const to = from + 1;
-    const items = [...outline.items];
-    items.splice(to, 0, items.splice(from, 1)[0]);
+
+    outline.items.splice(to, 0, outline.items.splice(from, 1)[0]);
 
     dispatch({
       type: SET_OUTLINE_ITEMS,
-      payload: items
+      payload: outline.items
     });
   };
 
@@ -143,6 +144,36 @@ const AgendasState = props => {
   const isFirstItem = item => {
     const index = outline.items.indexOf(item);
     return index !== 0;
+  };
+
+  const addItem = () => {
+    const newItem = {
+      id: uuidv4(),
+      value: "",
+      indent: 0,
+      mode: "editing"
+    };
+    dispatch({
+      type: ADD_OUTLINE_ITEM,
+      payload: newItem
+    });
+  };
+
+  const removeItem = item => {
+    const index = outline.items.indexOf(item);
+    dispatch({
+      type: REMOVE_OUTLINE_ITEM,
+      payload: index
+    });
+  };
+
+  const uuidv4 = () => {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16)
+    );
   };
   //Set loading
   const setLoading = () => dispatch({ type: SET_LOADING });
@@ -161,7 +192,9 @@ const AgendasState = props => {
         moveItemUp,
         moveItemDown,
         isFirstItem,
-        isLastItem
+        isLastItem,
+        addItem,
+        removeItem
       }}
     >
       {props.children}

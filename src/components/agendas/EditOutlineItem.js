@@ -15,6 +15,7 @@ const EditOutlineItem = ({ item }) => {
         </div>
         <div className='row'>
           <input
+            autoFocus
             type='text'
             className='form-control'
             value={item.value}

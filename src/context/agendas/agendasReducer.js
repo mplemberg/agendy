@@ -3,12 +3,16 @@ import {
   LOAD_AGENDA,
   SET_ACTIVE_ITEM,
   SET_ITEM_PROPERTY,
-  SET_OUTLINE_ITEMS
+  SET_OUTLINE_ITEMS,
+  REMOVE_OUTLINE_ITEM,
+  ADD_OUTLINE_ITEM
 } from "../types";
 
 export default (state, action) => {
   let item = null;
-  let agenda = null;
+  let agenda = {
+    ...state.agenda
+  };
   switch (action.type) {
     case LOAD_AGENDA:
       return {
@@ -22,9 +26,6 @@ export default (state, action) => {
         loading: true
       };
     case SET_ACTIVE_ITEM:
-      agenda = {
-        ...state.agenda
-      };
       agenda.outline.activeItem = action.payload;
       return {
         ...state,
@@ -39,10 +40,19 @@ export default (state, action) => {
         ...state
       };
     case SET_OUTLINE_ITEMS:
-      agenda = {
-        ...state.agenda
-      };
       agenda.outline.items = action.payload;
+      return {
+        ...state,
+        agenda
+      };
+    case ADD_OUTLINE_ITEM:
+      agenda.outline.items.push(action.payload);
+      return {
+        ...state,
+        agenda
+      };
+    case REMOVE_OUTLINE_ITEM:
+      agenda.outline.items.splice(action.payload, 1);
       return {
         ...state,
         agenda

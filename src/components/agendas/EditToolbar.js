@@ -8,7 +8,8 @@ const EditToolbar = ({ item }) => {
     moveItemUp,
     isFirstItem,
     isLastItem,
-    moveItemDown
+    moveItemDown,
+    removeItem
   } = agendasContext;
 
   const indent = item.indent ? item.indent : 0;
@@ -26,6 +27,10 @@ const EditToolbar = ({ item }) => {
 
   const handleItemDown = () => {
     moveItemDown(item);
+  };
+
+  const handleRemove = () => {
+    removeItem(item);
   };
 
   const showUp = !isFirstItem(item);
@@ -52,6 +57,9 @@ const EditToolbar = ({ item }) => {
           <Icon name='chevron-down' />
         </button>
       )}
+      <button className='btn btn-danger btn-sm' onClick={handleRemove}>
+        <Icon name='trash' />
+      </button>
     </div>
   );
 };

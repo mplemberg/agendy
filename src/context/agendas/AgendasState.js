@@ -5,7 +5,8 @@ import {
   SET_LOADING,
   LOAD_AGENDA,
   SET_ACTIVE_ITEM,
-  SET_ITEM_PROPERTY
+  SET_ITEM_PROPERTY,
+  SET_OUTLINE_ITEMS
 } from "../types";
 
 const AgendasState = props => {
@@ -25,6 +26,9 @@ const AgendasState = props => {
 
   const [state, dispatch] = useReducer(AgendasReducer, initialState);
 
+  const {
+    agenda: { outline }
+  } = state;
   const loadAgenda = async agendaId => {
     setLoading();
     //mock api
@@ -106,6 +110,40 @@ const AgendasState = props => {
     });
   };
 
+  const moveItemUp = item => {
+    const from = outline.items.indexOf(item);
+    const to = from - 1;
+    const items = [...outline.items];
+    items.splice(to, 0, items.splice(from, 1)[0]);
+
+    dispatch({
+      type: SET_OUTLINE_ITEMS,
+      payload: items
+    });
+  };
+
+  const moveItemDown = item => {
+    const from = outline.items.indexOf(item);
+    const to = from + 1;
+    const items = [...outline.items];
+    items.splice(to, 0, items.splice(from, 1)[0]);
+
+    dispatch({
+      type: SET_OUTLINE_ITEMS,
+      payload: items
+    });
+  };
+
+  //TODO: Should we just save the order on the object?
+  const isLastItem = item => {
+    const index = outline.items.indexOf(item);
+    return index !== outline.items.length - 1;
+  };
+
+  const isFirstItem = item => {
+    const index = outline.items.indexOf(item);
+    return index !== 0;
+  };
   //Set loading
   const setLoading = () => dispatch({ type: SET_LOADING });
   return (
@@ -119,7 +157,11 @@ const AgendasState = props => {
         isEditingMode,
         isHighlightingItem,
         isEditingItem,
-        setItemProperty
+        setItemProperty,
+        moveItemUp,
+        moveItemDown,
+        isFirstItem,
+        isLastItem
       }}
     >
       {props.children}

@@ -2,11 +2,13 @@ import {
   SET_LOADING,
   LOAD_AGENDA,
   SET_ACTIVE_ITEM,
-  SET_ITEM_PROPERTY
+  SET_ITEM_PROPERTY,
+  SET_OUTLINE_ITEMS
 } from "../types";
 
 export default (state, action) => {
   let item = null;
+  let agenda = null;
   switch (action.type) {
     case LOAD_AGENDA:
       return {
@@ -20,7 +22,7 @@ export default (state, action) => {
         loading: true
       };
     case SET_ACTIVE_ITEM:
-      let agenda = {
+      agenda = {
         ...state.agenda
       };
       agenda.outline.activeItem = action.payload;
@@ -35,6 +37,15 @@ export default (state, action) => {
       item[action.payload.property] = action.payload.value;
       return {
         ...state
+      };
+    case SET_OUTLINE_ITEMS:
+      agenda = {
+        ...state.agenda
+      };
+      agenda.outline.items = action.payload;
+      return {
+        ...state,
+        agenda
       };
     default:
       return state;

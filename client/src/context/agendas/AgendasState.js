@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import AgendasContext from "./agendasContext";
 import AgendasReducer from "./agendasReducer";
+import axios from "axios";
 import {
   SET_LOADING,
   LOAD_AGENDA,
@@ -33,6 +34,11 @@ const AgendasState = props => {
   } = { ...state };
   const loadAgenda = async agendaId => {
     setLoading();
+
+    //THIS IS JUST A TEST TO SHOW THE API WORKS
+    const apiTest = await axios.get("/api/agendas/");
+    console.log("agendas api test: " + apiTest.data[0].agendaLines[0].text);
+
     //mock api
     const agenda = {
       id: 1,

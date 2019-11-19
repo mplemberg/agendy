@@ -17,9 +17,9 @@ const Agenda = ({ match }) => {
   const { name, outline } = agenda;
   return (
     <main>
-      <div className='my-3'>
-        <div className='row'>
-          <div className='col'>
+      <div className="my-3">
+        <div className="row">
+          <div className="col">
             <h1>{name}</h1>
           </div>
         </div>

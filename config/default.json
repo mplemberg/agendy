@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://admin:Peacelove1@agendaappdb-q6prw.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "secret"
+}

@@ -39,6 +39,10 @@ const AgendasState = props => {
     agenda
   } = { ...state };
 
+  //THIS IS JUST A TEST TO SHOW THE API WORKS
+  //const apiTest = await axios.get("/api/agendas/");
+  //console.log("agendas api test: " + apiTest.data[0].agendaLines[0].text);
+  
   const apiClient = new MockHippidyApiClient("http://localhost:3001");
 
   const saveAgenda = async () => {

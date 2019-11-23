@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import AgendasContext from "./agendasContext";
 import AgendasReducer from "./agendasReducer";
+import history from "../../history";
 import {
   SET_LOADING,
   LOAD_AGENDA,
@@ -8,75 +9,92 @@ import {
   SET_ITEM_PROPERTY,
   SET_OUTLINE_ITEMS,
   REMOVE_OUTLINE_ITEM,
-  ADD_OUTLINE_ITEM
+  ADD_OUTLINE_ITEM,
+  SET_PENDING_SAVE,
+  SET_PENDING_PUBLISH
 } from "../types";
+import MockHippidyApiClient from "./MockHippidyApiClient";
 
 const AgendasState = props => {
   const initialState = {
     agendas: [],
     agenda: {
       outline: {
-        activeItem: {
-          id: null,
-          mode: null
-        },
         items: []
       }
     },
-    loading: false
+    activeOutlineItem: {
+      id: null,
+      mode: null
+    },
+    loading: false,
+    pendingSave: false,
+    pendingPublish: false
   };
 
   const [state, dispatch] = useReducer(AgendasReducer, initialState);
 
   const {
-    agenda: { outline }
+    agenda: { outline },
+    agenda
   } = { ...state };
+
+  const apiClient = new MockHippidyApiClient("http://localhost:3001");
+
+  const saveAgenda = async () => {
+    debugger;
+    let result;
+    let isDraft;
+    try {
+      if (agenda.saveDatetime) {
+        result = await apiClient.updateAgenda(agenda.id, agenda);
+      } else {
+        isDraft = true;
+        result = await apiClient.createAgenda(agenda);
+      }
+
+      dispatch({
+        type: LOAD_AGENDA,
+        payload: result.data
+      });
+
+      if (isDraft) {
+        history.push(`/agendas/${agenda.id}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const loadAgenda = async agendaId => {
     setLoading();
-    //mock api
-    const agenda = {
-      id: 1,
-      name: "Sprint Grooming 11/22",
-      outline: {
-        activeItem: {
-          id: null,
-          mode: null
-        },
-        items: [
-          {
-            id: 1,
-            value: "Review top backlog items"
-          },
-          {
-            id: 3,
-            value: "Don't let ilya take the meeting over",
-            indent: 1
-          },
-          {
-            id: 2,
-            value: "Definition of Ready Checklist"
-          },
-          {
-            id: 4,
-            value: "30 points for this sprint",
-            indent: 1
-          },
-          {
-            id: 5,
-            value: "need to rethink pointing",
-            indent: 2
-          }
-        ]
-      }
-    };
+    try {
+      const result = await apiClient.getAgenda(agendaId);
+      let agenda = result.data;
 
-    /*let foundAgenda = agendas.find(agenda => {
-      return agenda.id == agendaId;
-    })*/
+      dispatch({
+        type: LOAD_AGENDA,
+        payload: agenda
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  const loadDraft = () => {
     dispatch({
       type: LOAD_AGENDA,
-      payload: agenda
+      payload: {
+        id: uuidv4(),
+        name: "Untitled",
+        outline: {
+          items: [
+            {
+              id: 1,
+              value: "Untitled"
+            }
+          ]
+        }
+      }
     });
   };
 
@@ -88,24 +106,25 @@ const AgendasState = props => {
   };
 
   const isEditingMode = () => {
-    return state.agenda.outline.activeItem.mode === "editing";
+    return state.activeOutlineItem.mode === "editing";
   };
 
   const isHighlightingItem = itemId => {
     //debugger;
     return (
-      state.agenda.outline.activeItem.id === itemId &&
-      state.agenda.outline.activeItem.mode === "highlighting"
+      state.activeOutlineItem.id === itemId &&
+      state.activeOutlineItem.mode === "highlighting"
     );
   };
   const isEditingItem = itemId => {
     return (
-      state.agenda.outline.activeItem.id === itemId &&
-      state.agenda.outline.activeItem.mode === "editing"
+      state.activeOutlineItem.id === itemId &&
+      state.activeOutlineItem.mode === "editing"
     );
   };
 
   const setItemProperty = (itemId, property, value) => {
+    setPendingSave();
     dispatch({
       type: SET_ITEM_PROPERTY,
       payload: { id: itemId, value, property }
@@ -113,6 +132,7 @@ const AgendasState = props => {
   };
 
   const moveItemUp = item => {
+    setPendingSave();
     const from = outline.items.indexOf(item);
     const to = from - 1;
     outline.items.splice(to, 0, outline.items.splice(from, 1)[0]);
@@ -124,6 +144,7 @@ const AgendasState = props => {
   };
 
   const moveItemDown = item => {
+    setPendingSave();
     const from = outline.items.indexOf(item);
     const to = from + 1;
 
@@ -177,13 +198,20 @@ const AgendasState = props => {
   };
   //Set loading
   const setLoading = () => dispatch({ type: SET_LOADING });
+  const setPendingSave = () => dispatch({ type: SET_PENDING_SAVE });
+  const setPendingPublish = () => dispatch({ type: SET_PENDING_PUBLISH });
   return (
     <AgendasContext.Provider
       value={{
         //make available to all applications
         agenda: state.agenda,
         loading: state.loading,
+        pendingSave: state.pendingSave,
+        pendingPublish: state.pendingPublish,
+        activeOutlineItem: state.activeOutlineItem,
+        saveAgenda,
         loadAgenda,
+        loadDraft,
         setActiveItem,
         isEditingMode,
         isHighlightingItem,

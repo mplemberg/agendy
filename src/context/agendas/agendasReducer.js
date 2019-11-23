@@ -5,7 +5,9 @@ import {
   SET_ITEM_PROPERTY,
   SET_OUTLINE_ITEMS,
   REMOVE_OUTLINE_ITEM,
-  ADD_OUTLINE_ITEM
+  ADD_OUTLINE_ITEM,
+  SET_PENDING_SAVE,
+  SET_PENDING_PUBLISH
 } from "../types";
 
 export default (state, action) => {
@@ -25,11 +27,20 @@ export default (state, action) => {
         ...state,
         loading: true
       };
-    case SET_ACTIVE_ITEM:
-      agenda.outline.activeItem = action.payload;
+    case SET_PENDING_SAVE:
       return {
         ...state,
-        agenda
+        pendingSave: true
+      };
+    case SET_PENDING_PUBLISH:
+      return {
+        ...state,
+        pendingPublish: true
+      };
+    case SET_ACTIVE_ITEM:
+      return {
+        ...state,
+        activeOutlineItem: action.payload
       };
     case SET_ITEM_PROPERTY:
       item = state.agenda.outline.items.find(i => {

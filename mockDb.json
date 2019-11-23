@@ -1,0 +1,50 @@
+{
+  "agendas": [
+    {
+      "id": 1,
+      "name": "Sprint Grooming 11/22",
+      "outline": {
+        "items": [
+          {
+            "id": 1,
+            "value": "Review top backlog items"
+          },
+          {
+            "id": 3,
+            "value": "Don't let ilya take the meeting over",
+            "indent": 1
+          },
+          {
+            "id": 2,
+            "value": "Definition of Ready Checklist"
+          },
+          {
+            "id": 4,
+            "value": "30 points for this sprint",
+            "indent": 1
+          },
+          {
+            "id": 5,
+            "value": "need to rethink pointing",
+            "indent": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "54b73e35-d792-4cc7-8546-6fc896b0f934",
+      "name": "Untitled",
+      "outline": {
+        "items": [
+          {
+            "id": 1,
+            "value": "test"
+          }
+        ]
+      },
+      "saveDateTime": "today",
+      "viewId": "v2",
+      "editId": "e2"
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import NotFound from "./components/pages/NotFound";
 
 import GithubState from "./context/github/GithubState";
 import AlertState from "./context/alert/AlertState";
+import history from "./history";
 
 //Agendas
 import Agenda from "./components/agendas/Agenda";
@@ -20,7 +21,7 @@ const App = () => {
     <GithubState>
       <AlertState>
         <AgendasState>
-          <Router>
+          <Router history={history}>
             <div className='App'>
               <Navbar />
               <div className='container'>
@@ -31,7 +32,8 @@ const App = () => {
                       <Route exact path='/' component={Home} />
                       <Route exact path='/about' component={About} />
                       <Route exact path='/user/:login' component={User} />
-                      <Route exact path='/agenda/:id' component={Agenda} />
+                      <Route exact path='/agendas/:id' component={Agenda} />
+                      <Route exact path='/agenda/new' component={Agenda} />
                       <Route component={NotFound} />
                     </Switch>
                   </div>

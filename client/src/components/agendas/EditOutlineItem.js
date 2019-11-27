@@ -5,7 +5,7 @@ const EditOutlineItem = ({ item }) => {
   const agendasContext = useContext(AgendasContext);
   const { setItemProperty } = agendasContext;
   const onChange = e => {
-    setItemProperty(item.id, "value", e.target.value);
+    setItemProperty(item.id, "text", e.target.value);
   };
   return (
     <div className='row'>
@@ -18,7 +18,7 @@ const EditOutlineItem = ({ item }) => {
             autoFocus
             type='text'
             className='form-control'
-            value={item.value}
+            value={item.text}
             onChange={onChange}
           />
         </div>

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Agenda = require("../models/Agenda");
-
+const AgendaService = require("../services/AgendaService");
 router.get("/", async (req, res) => {
   // res.json({ msg: "get all gendas" });
   try {
@@ -28,18 +28,13 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { agendaLines } = req.body;
+  const agendaParams = req.body;
 
   try {
-    const newAgenda = new Agenda({
-      agendaLines
-    });
-
-    const agenda = await newAgenda.save();
-
+    const agenda = await AgendaService.createDraft(agendaParams);
     res.json(agenda);
   } catch (err) {
-    console.error(er.message);
+    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });

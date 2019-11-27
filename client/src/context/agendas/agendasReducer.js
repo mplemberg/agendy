@@ -43,7 +43,7 @@ export default (state, action) => {
         activeOutlineItem: action.payload
       };
     case SET_ITEM_PROPERTY:
-      item = state.agenda.outline.items.find(i => {
+      item = state.agenda.agendaLines.find(i => {
         return i.id === action.payload.id;
       });
       item[action.payload.property] = action.payload.value;
@@ -51,19 +51,19 @@ export default (state, action) => {
         ...state
       };
     case SET_OUTLINE_ITEMS:
-      agenda.outline.items = action.payload;
+      agenda.agendaLines = action.payload;
       return {
         ...state,
         agenda
       };
     case ADD_OUTLINE_ITEM:
-      agenda.outline.items.push(action.payload);
+      agenda.agendaLines.push(action.payload);
       return {
         ...state,
         agenda
       };
     case REMOVE_OUTLINE_ITEM:
-      agenda.outline.items.splice(action.payload, 1);
+      agenda.agendaLines.splice(action.payload, 1);
       return {
         ...state,
         agenda

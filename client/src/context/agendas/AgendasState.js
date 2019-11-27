@@ -14,14 +14,13 @@ import {
   SET_PENDING_PUBLISH
 } from "../types";
 import MockHippidyApiClient from "./MockHippidyApiClient";
+import HippidyApiClient from "./HippidyApiClient";
 
 const AgendasState = props => {
   const initialState = {
     agendas: [],
     agenda: {
-      outline: {
-        items: []
-      }
+      agendaLines: []
     },
     activeOutlineItem: {
       id: null,
@@ -35,15 +34,15 @@ const AgendasState = props => {
   const [state, dispatch] = useReducer(AgendasReducer, initialState);
 
   const {
-    agenda: { outline },
+    agenda: { agendaLines },
     agenda
   } = { ...state };
 
   //THIS IS JUST A TEST TO SHOW THE API WORKS
   //const apiTest = await axios.get("/api/agendas/");
   //console.log("agendas api test: " + apiTest.data[0].agendaLines[0].text);
-  
-  const apiClient = new MockHippidyApiClient("http://localhost:3001");
+
+  const apiClient = new HippidyApiClient("");
 
   const saveAgenda = async () => {
     debugger;
@@ -57,13 +56,14 @@ const AgendasState = props => {
         result = await apiClient.createAgenda(agenda);
       }
 
+      debugger;
       dispatch({
         type: LOAD_AGENDA,
         payload: result.data
       });
 
       if (isDraft) {
-        history.push(`/agendas/${agenda.id}`);
+        history.push(`/agendas/${result.data.editCode}`);
       }
     } catch (error) {
       console.error(error);
@@ -90,14 +90,12 @@ const AgendasState = props => {
       payload: {
         id: uuidv4(),
         name: "Untitled",
-        outline: {
-          items: [
-            {
-              id: 1,
-              value: "Untitled"
-            }
-          ]
-        }
+        agendaLines: [
+          {
+            id: 1,
+            text: "Untitled"
+          }
+        ]
       }
     });
   };
@@ -137,37 +135,37 @@ const AgendasState = props => {
 
   const moveItemUp = item => {
     setPendingSave();
-    const from = outline.items.indexOf(item);
+    const from = agendaLines.indexOf(item);
     const to = from - 1;
-    outline.items.splice(to, 0, outline.items.splice(from, 1)[0]);
+    agendaLines.splice(to, 0, agendaLines.splice(from, 1)[0]);
 
     dispatch({
       type: SET_OUTLINE_ITEMS,
-      payload: outline.items
+      payload: agendaLines
     });
   };
 
   const moveItemDown = item => {
     setPendingSave();
-    const from = outline.items.indexOf(item);
+    const from = agendaLines.indexOf(item);
     const to = from + 1;
 
-    outline.items.splice(to, 0, outline.items.splice(from, 1)[0]);
+    agendaLines.items.splice(to, 0, agendaLines.items.splice(from, 1)[0]);
 
     dispatch({
       type: SET_OUTLINE_ITEMS,
-      payload: outline.items
+      payload: agendaLines
     });
   };
 
   //TODO: Should we just save the order on the object?
   const isLastItem = item => {
-    const index = outline.items.indexOf(item);
-    return index !== outline.items.length - 1;
+    const index = agendaLines.indexOf(item);
+    return index !== agendaLines.length - 1;
   };
 
   const isFirstItem = item => {
-    const index = outline.items.indexOf(item);
+    const index = agendaLines.indexOf(item);
     return index !== 0;
   };
 
@@ -185,7 +183,7 @@ const AgendasState = props => {
   };
 
   const removeItem = item => {
-    const index = outline.items.indexOf(item);
+    const index = agendaLines.indexOf(item);
     dispatch({
       type: REMOVE_OUTLINE_ITEM,
       payload: index

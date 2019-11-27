@@ -28,7 +28,7 @@ const Agenda = ({ match }) => {
 
   if (loading) return <Spinner />;
 
-  const { name, outline } = agenda;
+  const { name, agendaLines } = agenda;
   return (
     <main>
       <div className='my-3'>
@@ -53,7 +53,7 @@ const Agenda = ({ match }) => {
           </div>
         </div>
       </div>
-      {outline && <Outline />}
+      {agendaLines && <Outline />}
     </main>
   );
 };

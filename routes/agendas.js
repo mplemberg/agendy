@@ -13,13 +13,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/edit/:editCode", async (req, res) => {
   try {
-    let agenda = await Agenda.findById(req.params.id);
+    const agenda = await AgendaService.getDraft(req.params.editCode);
     if (!agenda) return res.status(404).json({ msg: "Agenda not found" });
-    if (agenda.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "Not authorized" });
-    }
     res.json(agenda);
   } catch (err) {
     console.error(err.message);

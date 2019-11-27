@@ -1,19 +1,26 @@
 const mongoose = require("mongoose");
 
 const AgendaSchema = mongoose.Schema({
-  versions: [
-    {
-      versionType: String,
-      name: String,
-      agendaLines: [
-        {
-          id: String,
-          text: String,
-          indent: { type: Number, default: 0 }
-        }
-      ]
-    }
-  ],
+  draftVersion: {
+    name: String,
+    agendaLines: [
+      {
+        id: String,
+        text: String,
+        indent: { type: Number, default: 0 }
+      }
+    ]
+  },
+  publishedVersion: {
+    name: String,
+    agendaLines: [
+      {
+        id: String,
+        text: String,
+        indent: { type: Number, default: 0 }
+      }
+    ]
+  },
   viewCode: String,
   editCode: String,
   createdDate: {

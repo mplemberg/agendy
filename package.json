@@ -19,7 +19,9 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "debug": "concurrently \"nodemon --inspect server.js\" \"npm run client\"",
+    "debug-server": "nodemon --inspect server.js"
   },
   "repository": {
     "type": "git",

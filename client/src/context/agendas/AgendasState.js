@@ -45,7 +45,6 @@ const AgendasState = props => {
   const apiClient = new HippidyApiClient("");
 
   const saveAgenda = async () => {
-    debugger;
     let result;
     let isDraft;
     try {
@@ -56,7 +55,6 @@ const AgendasState = props => {
         result = await apiClient.createAgenda(agenda);
       }
 
-      debugger;
       dispatch({
         type: LOAD_AGENDA,
         payload: result.data
@@ -88,7 +86,6 @@ const AgendasState = props => {
     dispatch({
       type: LOAD_AGENDA,
       payload: {
-        id: uuidv4(),
         name: "Untitled",
         agendaLines: [
           {

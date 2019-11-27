@@ -12,26 +12,40 @@ const uuidv4 = () => {
 class AgendaService {
   async createDraft({ name, agendaLines }) {
     const newAgenda = new Agenda({
-      editCode: uuidv4(),
-      versions: [
-        {
-          versionType: "draft",
-          name,
-          agendaLines
-        }
-      ]
+      draftVersion: { name, agendaLines },
+      editCode: uuidv4()
     });
     const agenda = await newAgenda.save();
 
     return {
-      name: agenda.versions[0].name,
-      agendaLines: agenda.versions[0].agendaLines,
-      editCode: agenda.editCode,
-      viewCode: agenda.viewCode,
       isPublishable: true,
+      id: agenda.id,
+      name: agenda.draftVersion.name,
+      agendaLines: agenda.draftVersion.agendaLines,
+      editCode: agenda.editCode,
       savedDate: agenda.savedDate
     };
   }
+
+  async getDraft(editCode) {
+    const agenda = await Agenda.findOne({ editCode });
+
+    const agendaView = {
+      id: agenda.id,
+      name: agenda.draftVersion.name,
+      agendaLines: agenda.draftVersion.agendaLines,
+      editCode: agenda.editCode,
+      savedDate: agenda.savedDate,
+      publishedDate: agenda.publishedDate
+    };
+
+    if (!agenda.publishedDate || agenda.savedDate !== agenda.publishedDate) {
+      agendaView.isPublishable = true;
+    }
+    return agendaView;
+  }
+
+  async updateDraft(id, draft) {}
 }
 
 module.exports = new AgendaService();

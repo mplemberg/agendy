@@ -8,7 +8,7 @@ export default class HippidyApiClient {
   }
 
   async getAgenda(id) {
-    return await axios.get(`${this.baseUrl}/api/agendas/${id}`);
+    return await axios.get(`${this.baseUrl}/api/agendas/edit/${id}`);
   }
 
   async createAgenda(agenda) {

@@ -2,6 +2,8 @@ import React, { useEffect, Fragment, useContext } from "react";
 import Spinner from "../layout/Spinner";
 import AgendasContext from "../../context/agendas/agendasContext";
 import OutlineEditor from "./OutlineEditor";
+import TitleEditor from "./TitleEditor";
+
 import Icon from "react-fontawesome";
 
 const AgendaEditor = ({ match }) => {
@@ -34,7 +36,9 @@ const AgendaEditor = ({ match }) => {
       <div className='my-3'>
         <div className='row'>
           <div className='col-auto'>
-            <div className='h1'>{name}</div>
+            <div className='h1'>
+              <TitleEditor title={name} />
+            </div>
           </div>
           <div className='col'>
             {pendingSave && (

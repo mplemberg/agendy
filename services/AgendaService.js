@@ -87,7 +87,7 @@ class AgendaService {
       {
         publishedVersion: agenda.draftVersion,
         publishedDate: Date.now(),
-        viewCode: uuidv4()
+        viewCode: agenda.viewCode ? agenda.viewCode : uuidv4()
       },
       { new: true }
     );
@@ -97,6 +97,9 @@ class AgendaService {
 
   async getPublished(viewCode) {
     const agenda = await Agenda.findOne({ viewCode });
+    if (!agenda) {
+      return null;
+    }
     return buildPublishedViewFromModel(agenda);
   }
 }

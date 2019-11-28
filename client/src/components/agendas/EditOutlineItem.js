@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import AgendasContext from "../../context/agendas/agendasContext";
 import EditToolbar from "./EditToolbar";
+
 const EditOutlineItem = ({ item }) => {
   const agendasContext = useContext(AgendasContext);
-  const { setItemProperty } = agendasContext;
+  const { setItemProperty, clearActiveItem } = agendasContext;
   const onChange = e => {
     setItemProperty(item.id, "text", e.target.value);
   };
+
   return (
     <div className='row'>
       <div className='col'>

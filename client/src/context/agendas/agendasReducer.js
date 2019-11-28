@@ -6,7 +6,8 @@ import {
   SET_OUTLINE_ITEMS,
   REMOVE_OUTLINE_ITEM,
   ADD_OUTLINE_ITEM,
-  SET_PENDING_SAVE
+  SET_PENDING_SAVE,
+  SET_TITLE
 } from "../types";
 
 export default (state, action) => {
@@ -36,7 +37,7 @@ export default (state, action) => {
     case SET_ACTIVE_ITEM:
       return {
         ...state,
-        activeOutlineItem: action.payload
+        activeItem: action.payload
       };
     case SET_ITEM_PROPERTY:
       item = state.agenda.agendaLines.find(i => {
@@ -60,6 +61,12 @@ export default (state, action) => {
       };
     case REMOVE_OUTLINE_ITEM:
       agenda.agendaLines.splice(action.payload, 1);
+      return {
+        ...state,
+        agenda
+      };
+    case SET_TITLE:
+      agenda.name = action.payload;
       return {
         ...state,
         agenda

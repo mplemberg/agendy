@@ -31,7 +31,7 @@ const AgendaViewer = ({ match }) => {
           <div className='row'>
             <div className='col-auto'>
               <div className='small font-italic'>
-                Last Published: {agenda.publishedDate}
+                Last Updated: {agenda.publishedDate}
               </div>
             </div>
           </div>

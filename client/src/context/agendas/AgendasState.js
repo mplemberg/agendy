@@ -11,7 +11,7 @@ import {
   REMOVE_OUTLINE_ITEM,
   ADD_OUTLINE_ITEM,
   SET_PENDING_SAVE,
-  SET_PENDING_PUBLISH
+  SET_TITLE
 } from "../types";
 import MockHippidyApiClient from "./MockHippidyApiClient";
 import HippidyApiClient from "./HippidyApiClient";
@@ -22,7 +22,7 @@ const AgendasState = props => {
     agenda: {
       agendaLines: []
     },
-    activeOutlineItem: {
+    activeItem: {
       id: null,
       mode: null
     },
@@ -36,10 +36,6 @@ const AgendasState = props => {
     agenda: { agendaLines },
     agenda
   } = { ...state };
-
-  //THIS IS JUST A TEST TO SHOW THE API WORKS
-  //const apiTest = await axios.get("/api/agendas/");
-  //console.log("agendas api test: " + apiTest.data[0].agendaLines[0].text);
 
   const apiClient = new HippidyApiClient("");
 
@@ -121,21 +117,23 @@ const AgendasState = props => {
     });
   };
 
+  const clearActiveItem = () => {
+    setActiveItem(null, null);
+  };
+
   const isEditingMode = () => {
-    return state.activeOutlineItem.mode === "editing";
+    return state.activeItem.mode === "editing";
   };
 
   const isHighlightingItem = itemId => {
     //debugger;
     return (
-      state.activeOutlineItem.id === itemId &&
-      state.activeOutlineItem.mode === "highlighting"
+      state.activeItem.id === itemId && state.activeItem.mode === "highlighting"
     );
   };
   const isEditingItem = itemId => {
     return (
-      state.activeOutlineItem.id === itemId &&
-      state.activeOutlineItem.mode === "editing"
+      state.activeItem.id === itemId && state.activeItem.mode === "editing"
     );
   };
 
@@ -144,6 +142,14 @@ const AgendasState = props => {
     dispatch({
       type: SET_ITEM_PROPERTY,
       payload: { id: itemId, value, property }
+    });
+  };
+
+  const setTitle = title => {
+    setPendingSave();
+    dispatch({
+      type: SET_TITLE,
+      payload: title
     });
   };
 
@@ -224,7 +230,7 @@ const AgendasState = props => {
         agenda: state.agenda,
         loading: state.loading,
         pendingSave: state.pendingSave,
-        activeOutlineItem: state.activeOutlineItem,
+        activeItem: state.activeItem,
         saveAgenda,
         loadAgenda,
         loadDraft,
@@ -239,7 +245,9 @@ const AgendasState = props => {
         isLastItem,
         addItem,
         removeItem,
-        publishAgenda
+        publishAgenda,
+        clearActiveItem,
+        setTitle
       }}
     >
       {props.children}

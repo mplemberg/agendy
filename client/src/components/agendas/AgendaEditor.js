@@ -1,10 +1,10 @@
 import React, { useEffect, Fragment, useContext } from "react";
 import Spinner from "../layout/Spinner";
 import AgendasContext from "../../context/agendas/agendasContext";
-import Outline from "./Outline";
+import OutlineEditor from "./OutlineEditor";
 import Icon from "react-fontawesome";
 
-const Agenda = ({ match }) => {
+const AgendaEditor = ({ match }) => {
   const agendasContext = useContext(AgendasContext);
 
   const {
@@ -14,12 +14,12 @@ const Agenda = ({ match }) => {
     saveAgenda,
     agenda,
     pendingSave,
-    pendingPublish
+    publishAgenda
   } = agendasContext;
 
   useEffect(() => {
-    if (match.params.id) {
-      loadAgenda(match.params.id);
+    if (match.params.editCode) {
+      loadAgenda(match.params.editCode, "edit");
     } else {
       loadDraft();
     }
@@ -40,22 +40,41 @@ const Agenda = ({ match }) => {
             {pendingSave && (
               <Fragment>
                 <button className='btn btn-success' onClick={saveAgenda}>
-                  <Icon name='save' />
+                  Save
                 </button>
               </Fragment>
             )}
 
-            {pendingPublish && (
-              <button className='btn btn-dark'>
-                <Icon name='upload' />
+            {agenda.isPublishable && (
+              <button className='btn btn-dark' onClick={publishAgenda}>
+                Publish
               </button>
             )}
           </div>
         </div>
+        {agenda.savedDate && (
+          <div className='row'>
+            <div className='col-auto'>
+              <div className='small font-italic'>
+                {" "}
+                Last Saved: {agenda.savedDate}
+              </div>
+            </div>
+          </div>
+        )}
+        {agenda.publishedDate && (
+          <div className='row'>
+            <div className='col-auto'>
+              <div className='small font-italic'>
+                Last Published: {agenda.publishedDate}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      {agendaLines && <Outline />}
+      {agendaLines && <OutlineEditor />}
     </main>
   );
 };
 
-export default Agenda;
+export default AgendaEditor;

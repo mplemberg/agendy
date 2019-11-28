@@ -9,6 +9,43 @@ const uuidv4 = () => {
   });
 };
 
+const setPublishable = (agendaView, agenda) => {
+  if (
+    !agenda.publishedVersion ||
+    agenda.publishedVersion.savedDate.toUTCString() !==
+      agenda.draftVersion.savedDate.toUTCString()
+  ) {
+    agendaView.isPublishable = true;
+  }
+};
+const buildDraftViewFromModel = agenda => {
+  const agendaView = {
+    id: agenda.id,
+    name: agenda.draftVersion.name,
+    agendaLines: agenda.draftVersion.agendaLines,
+    savedDate: agenda.draftVersion.savedDate,
+    publishedDate: agenda.publishedDate
+  };
+
+  setPublishable(agendaView, agenda);
+
+  return agendaView;
+};
+
+const buildPublishedViewFromModel = agenda => {
+  const agendaView = {
+    id: agenda.id,
+    name: agenda.publishedVersion.name,
+    agendaLines: agenda.publishedVersion.agendaLines,
+    savedDate: agenda.publishedVersion.savedDate,
+    publishedDate: agenda.publishedDate
+  };
+
+  setPublishable(agendaView, agenda);
+
+  return agendaView;
+};
+
 class AgendaService {
   async createDraft({ name, agendaLines }) {
     const newAgenda = new Agenda({
@@ -23,29 +60,45 @@ class AgendaService {
       name: agenda.draftVersion.name,
       agendaLines: agenda.draftVersion.agendaLines,
       editCode: agenda.editCode,
-      savedDate: agenda.savedDate
+      savedDate: agenda.draftVersion.savedDate
     };
   }
 
   async getDraft(editCode) {
     const agenda = await Agenda.findOne({ editCode });
-
-    const agendaView = {
-      id: agenda.id,
-      name: agenda.draftVersion.name,
-      agendaLines: agenda.draftVersion.agendaLines,
-      editCode: agenda.editCode,
-      savedDate: agenda.savedDate,
-      publishedDate: agenda.publishedDate
-    };
-
-    if (!agenda.publishedDate || agenda.savedDate !== agenda.publishedDate) {
-      agendaView.isPublishable = true;
-    }
-    return agendaView;
+    return buildDraftViewFromModel(agenda);
   }
 
-  async updateDraft(id, draft) {}
+  async updateDraft(id, { name, agendaLines }) {
+    const agenda = await Agenda.findByIdAndUpdate(
+      id,
+      {
+        draftVersion: { name, agendaLines, savedDate: Date.now() }
+      },
+      { new: true }
+    );
+    return buildDraftViewFromModel(agenda);
+  }
+
+  async publish(id) {
+    let agenda = await Agenda.findById(id);
+    agenda = await Agenda.findByIdAndUpdate(
+      id,
+      {
+        publishedVersion: agenda.draftVersion,
+        publishedDate: Date.now(),
+        viewCode: uuidv4()
+      },
+      { new: true }
+    );
+
+    return buildDraftViewFromModel(agenda);
+  }
+
+  async getPublished(viewCode) {
+    const agenda = await Agenda.findOne({ viewCode });
+    return buildPublishedViewFromModel(agenda);
+  }
 }
 
 module.exports = new AgendaService();

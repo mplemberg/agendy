@@ -13,9 +13,43 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:viewCode", async (req, res) => {
+  try {
+    const agenda = await AgendaService.getPublished(req.params.viewCode);
+    if (!agenda) return res.status(404).json({ msg: "Agenda not found" });
+    res.json(agenda);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 router.get("/edit/:editCode", async (req, res) => {
   try {
     const agenda = await AgendaService.getDraft(req.params.editCode);
+    if (!agenda) return res.status(404).json({ msg: "Agenda not found" });
+    res.json(agenda);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.put("/edit/:id", async (req, res) => {
+  const agendaParams = req.body;
+  try {
+    const agenda = await AgendaService.updateDraft(req.params.id, agendaParams);
+    if (!agenda) return res.status(404).json({ msg: "Agenda not found" });
+    res.json(agenda);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.put("/publish/:id", async (req, res) => {
+  try {
+    const agenda = await AgendaService.publish(req.params.id);
     if (!agenda) return res.status(404).json({ msg: "Agenda not found" });
     res.json(agenda);
   } catch (err) {

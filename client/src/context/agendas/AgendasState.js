@@ -27,8 +27,7 @@ const AgendasState = props => {
       mode: null
     },
     loading: false,
-    pendingSave: false,
-    pendingPublish: false
+    pendingSave: false
   };
 
   const [state, dispatch] = useReducer(AgendasReducer, initialState);
@@ -48,8 +47,8 @@ const AgendasState = props => {
     let result;
     let isDraft;
     try {
-      if (agenda.saveDatetime) {
-        result = await apiClient.updateAgenda(agenda.id, agenda);
+      if (agenda.savedDate) {
+        result = await apiClient.saveDraftAgenda(agenda);
       } else {
         isDraft = true;
         result = await apiClient.createAgenda(agenda);
@@ -61,16 +60,34 @@ const AgendasState = props => {
       });
 
       if (isDraft) {
-        history.push(`/agendas/${result.data.editCode}`);
+        history.push(`/agenda/edit/${result.data.editCode}`);
       }
     } catch (error) {
       console.error(error);
     }
   };
-  const loadAgenda = async agendaId => {
+
+  const publishAgenda = async () => {
+    try {
+      const result = await apiClient.publishDraftAgenda(agenda.id);
+      dispatch({
+        type: LOAD_AGENDA,
+        payload: result.data
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const loadAgenda = async (code, mode = "view") => {
     setLoading();
     try {
-      const result = await apiClient.getAgenda(agendaId);
+      let result;
+      if (mode && mode === "edit") {
+        result = await apiClient.getDraftAgenda(code);
+      } else {
+        result = await apiClient.getPublishedAgenda(code);
+      }
       let agenda = result.data;
 
       dispatch({
@@ -167,6 +184,7 @@ const AgendasState = props => {
   };
 
   const addItem = () => {
+    setPendingSave();
     const newItem = {
       id: uuidv4(),
       value: "",
@@ -180,6 +198,7 @@ const AgendasState = props => {
   };
 
   const removeItem = item => {
+    setPendingSave();
     const index = agendaLines.indexOf(item);
     dispatch({
       type: REMOVE_OUTLINE_ITEM,
@@ -198,7 +217,6 @@ const AgendasState = props => {
   //Set loading
   const setLoading = () => dispatch({ type: SET_LOADING });
   const setPendingSave = () => dispatch({ type: SET_PENDING_SAVE });
-  const setPendingPublish = () => dispatch({ type: SET_PENDING_PUBLISH });
   return (
     <AgendasContext.Provider
       value={{
@@ -206,7 +224,6 @@ const AgendasState = props => {
         agenda: state.agenda,
         loading: state.loading,
         pendingSave: state.pendingSave,
-        pendingPublish: state.pendingPublish,
         activeOutlineItem: state.activeOutlineItem,
         saveAgenda,
         loadAgenda,
@@ -221,7 +238,8 @@ const AgendasState = props => {
         isFirstItem,
         isLastItem,
         addItem,
-        removeItem
+        removeItem,
+        publishAgenda
       }}
     >
       {props.children}

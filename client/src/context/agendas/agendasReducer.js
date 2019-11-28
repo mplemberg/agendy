@@ -6,8 +6,7 @@ import {
   SET_OUTLINE_ITEMS,
   REMOVE_OUTLINE_ITEM,
   ADD_OUTLINE_ITEM,
-  SET_PENDING_SAVE,
-  SET_PENDING_PUBLISH
+  SET_PENDING_SAVE
 } from "../types";
 
 export default (state, action) => {
@@ -20,6 +19,7 @@ export default (state, action) => {
       return {
         ...state,
         loading: false,
+        pendingSave: false,
         agenda: action.payload
       };
     case SET_LOADING:
@@ -32,11 +32,7 @@ export default (state, action) => {
         ...state,
         pendingSave: true
       };
-    case SET_PENDING_PUBLISH:
-      return {
-        ...state,
-        pendingPublish: true
-      };
+
     case SET_ACTIVE_ITEM:
       return {
         ...state,

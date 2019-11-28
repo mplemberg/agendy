@@ -12,7 +12,8 @@ import AlertState from "./context/alert/AlertState";
 import history from "./history";
 
 //Agendas
-import Agenda from "./components/agendas/Agenda";
+import AgendaEditor from "./components/agendas/AgendaEditor";
+import AgendaViewer from "./components/agendas/AgendaViewer";
 import AgendasState from "./context/agendas/AgendasState";
 //import "./App.css";
 import "./App.scss";
@@ -32,8 +33,21 @@ const App = () => {
                       <Route exact path='/' component={Home} />
                       <Route exact path='/about' component={About} />
                       <Route exact path='/user/:login' component={User} />
-                      <Route exact path='/agendas/:id' component={Agenda} />
-                      <Route exact path='/agenda/new' component={Agenda} />
+                      <Route
+                        exact
+                        path='/agenda/edit/:editCode'
+                        component={AgendaEditor}
+                      />
+                      <Route
+                        exact
+                        path='/agenda/view/:viewCode'
+                        component={AgendaViewer}
+                      />
+                      <Route
+                        exact
+                        path='/agenda/new'
+                        component={AgendaEditor}
+                      />
                       <Route component={NotFound} />
                     </Switch>
                   </div>

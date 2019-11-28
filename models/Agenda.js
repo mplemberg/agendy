@@ -9,7 +9,11 @@ const AgendaSchema = mongoose.Schema({
         text: String,
         indent: { type: Number, default: 0 }
       }
-    ]
+    ],
+    savedDate: {
+      type: Date,
+      default: Date.now
+    }
   },
   publishedVersion: {
     name: String,
@@ -19,15 +23,12 @@ const AgendaSchema = mongoose.Schema({
         text: String,
         indent: { type: Number, default: 0 }
       }
-    ]
+    ],
+    savedDate: Date
   },
   viewCode: String,
   editCode: String,
   createdDate: {
-    type: Date,
-    default: Date.now
-  },
-  savedDate: {
     type: Date,
     default: Date.now
   },

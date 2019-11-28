@@ -18,7 +18,7 @@ const EditOutlineItem = ({ item }) => {
             autoFocus
             type='text'
             className='form-control'
-            value={item.text}
+            value={item.text || ""}
             onChange={onChange}
           />
         </div>

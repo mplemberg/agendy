@@ -3,7 +3,7 @@ import OutlineItem from "./OutlineItem";
 import AgendasContext from "../../context/agendas/agendasContext";
 import Icon from "react-fontawesome";
 
-const Outline = () => {
+const OutlineEditor = () => {
   const agendasContext = useContext(AgendasContext);
   const {
     agenda: { agendaLines },
@@ -22,4 +22,4 @@ const Outline = () => {
   );
 };
 
-export default Outline;
+export default OutlineEditor;

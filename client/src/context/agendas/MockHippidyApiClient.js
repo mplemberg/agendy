@@ -6,7 +6,7 @@ export default class MockHippidyApiClient {
   }
 
   async getAgenda(id) {
-    return this.apiClient.getAgenda(id);
+    return this.apiClient.getDraftAgenda(id);
   }
 
   async createAgenda(agenda) {

@@ -21,7 +21,8 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
     addItem,
     removeItem,
     isHovering,
-    clearHoveredItem
+    clearHoveredItem,
+    addNewAfter
   } = agendasContext;
 
   const handleClick = () => {
@@ -47,7 +48,7 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
 
   const handleEnter = e => {
     e.preventDefault();
-    addItem();
+    addNewAfter(item);
   };
 
   const handleBackspace = e => {

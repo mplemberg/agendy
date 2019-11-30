@@ -38,6 +38,10 @@ const AgendasState = props => {
 
   const apiClient = new HippidyApiClient("");
 
+  const getNewItem = () => {
+    return { id: uuidv4(), text: "", indent: 0 };
+  };
+
   const saveAgenda = async () => {
     let result;
     let isDraft;
@@ -175,6 +179,19 @@ const AgendasState = props => {
     });
   };
 
+  const addNewAfter = item => {
+    setPendingSave();
+    const currentIndex = agendaLines.indexOf(item);
+    let newItem = getNewItem();
+    agendaLines.splice(currentIndex + 1, 0, newItem);
+    dispatch({
+      type: SET_OUTLINE_ITEMS,
+      payload: agendaLines
+    });
+    setEditingItem(newItem);
+    setHoveredItem(newItem);
+  };
+
   const reorderItems = (index, currentItem) => {
     setPendingSave();
     let newAgendaLines = agendaLines.filter(item => item !== currentItem);
@@ -212,25 +229,23 @@ const AgendasState = props => {
 
   const addItem = () => {
     setPendingSave();
-    const newItem = {
-      id: uuidv4(),
-      value: "",
-      indent: 0,
-      mode: "editing"
-    };
+
     dispatch({
       type: ADD_OUTLINE_ITEM,
-      payload: newItem
+      payload: getNewItem()
     });
   };
 
   const removeItem = item => {
     setPendingSave();
     const index = agendaLines.indexOf(item);
+    const newlyFocusedItem = agendaLines[index - 1];
     dispatch({
       type: REMOVE_OUTLINE_ITEM,
       payload: index
     });
+    setHoveredItem(newlyFocusedItem);
+    setEditingItem(newlyFocusedItem);
   };
 
   const uuidv4 = () => {
@@ -287,7 +302,8 @@ const AgendasState = props => {
         setTitle,
         reorderItems,
         moveLeft,
-        moveRight
+        moveRight,
+        addNewAfter
       }}
     >
       {props.children}

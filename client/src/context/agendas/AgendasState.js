@@ -5,7 +5,8 @@ import history from "../../history";
 import {
   SET_LOADING,
   LOAD_AGENDA,
-  SET_ACTIVE_ITEM,
+  SET_HOVERED_ITEM,
+  SET_EDITING_ITEM,
   SET_ITEM_PROPERTY,
   SET_OUTLINE_ITEMS,
   REMOVE_OUTLINE_ITEM,
@@ -22,10 +23,8 @@ const AgendasState = props => {
     agenda: {
       agendaLines: []
     },
-    activeItem: {
-      id: null,
-      mode: null
-    },
+    hoveredItem: null,
+    editingItem: null,
     loading: false,
     pendingSave: false
   };
@@ -110,31 +109,42 @@ const AgendasState = props => {
     });
   };
 
-  const setActiveItem = (itemId, mode) => {
+  const setEditingItem = item => {
     dispatch({
-      type: SET_ACTIVE_ITEM,
-      payload: { id: itemId, mode }
+      type: SET_EDITING_ITEM,
+      payload: item
     });
   };
 
-  const clearActiveItem = () => {
-    setActiveItem(null, null);
+  const clearEditingItem = () => {
+    setEditingItem(null);
   };
 
-  const isEditingMode = () => {
-    return state.activeItem.mode === "editing";
+  const isEditing = () => {
+    return state.editingItem !== null;
   };
 
-  const isHighlightingItem = itemId => {
-    //debugger;
-    return (
-      state.activeItem.id === itemId && state.activeItem.mode === "highlighting"
-    );
+  const isEditingItem = item => {
+    return state.editingItem === item;
   };
-  const isEditingItem = itemId => {
-    return (
-      state.activeItem.id === itemId && state.activeItem.mode === "editing"
-    );
+
+  const setHoveredItem = item => {
+    dispatch({
+      type: SET_HOVERED_ITEM,
+      payload: item
+    });
+  };
+
+  const clearHoveredItem = () => {
+    setHoveredItem(null);
+  };
+
+  const isHovering = () => {
+    return state.hoveredItem !== null;
+  };
+
+  const isHoveredItem = item => {
+    return state.hoveredItem === item;
   };
 
   const setItemProperty = (itemId, property, value) => {
@@ -165,6 +175,17 @@ const AgendasState = props => {
     });
   };
 
+  const reorderItems = (index, currentItem) => {
+    setPendingSave();
+    let newAgendaLines = agendaLines.filter(item => item !== currentItem);
+
+    // add the dragged item after the dragged over item
+    newAgendaLines.splice(index, 0, currentItem);
+    dispatch({
+      type: SET_OUTLINE_ITEMS,
+      payload: newAgendaLines
+    });
+  };
   const moveItemDown = item => {
     setPendingSave();
     const from = agendaLines.indexOf(item);
@@ -223,6 +244,19 @@ const AgendasState = props => {
   //Set loading
   const setLoading = () => dispatch({ type: SET_LOADING });
   const setPendingSave = () => dispatch({ type: SET_PENDING_SAVE });
+
+  const moveLeft = item => {
+    if (item.indent > 0) {
+      setItemProperty(item.id, "indent", item.indent - 1);
+    }
+  };
+
+  const moveRight = item => {
+    if (!item.indent || item.indent !== 2) {
+      const indent = (item.indent ? item.indent : 0) + 1;
+      setItemProperty(item.id, "indent", indent);
+    }
+  };
   return (
     <AgendasContext.Provider
       value={{
@@ -234,9 +268,13 @@ const AgendasState = props => {
         saveAgenda,
         loadAgenda,
         loadDraft,
-        setActiveItem,
-        isEditingMode,
-        isHighlightingItem,
+        setEditingItem,
+        setHoveredItem,
+        isEditing,
+        isHovering,
+        isHoveredItem,
+        clearHoveredItem,
+        clearEditingItem,
         isEditingItem,
         setItemProperty,
         moveItemUp,
@@ -246,8 +284,10 @@ const AgendasState = props => {
         addItem,
         removeItem,
         publishAgenda,
-        clearActiveItem,
-        setTitle
+        setTitle,
+        reorderItems,
+        moveLeft,
+        moveRight
       }}
     >
       {props.children}

@@ -1,40 +1,58 @@
-import React, { useContext } from "react";
-import EditableField from "./EditableField";
+import React, { useContext, useState, Fragment } from "react";
+//import EditableField from "./EditableField";
 import AgendasContext from "../../context/agendas/agendasContext";
 import Icon from "react-fontawesome";
 import DisplayOutlineItem from "./DisplayOutlineItem";
 import HighlightOutlineItem from "./HighlightOutlineItem";
 import EditOutlineItem from "./EditOutlineItem";
 const OutlineEditor = () => {
+  const [draggedItem, setDraggedItem] = useState({});
+  const [draggedIdx, setDraggedIdx] = useState(null);
   const agendasContext = useContext(AgendasContext);
   const {
     agenda: { agendaLines },
-    addItem
+    addItem,
+    reorderItems,
+    isHoveredItem,
+    setHoveredItem
   } = agendasContext;
 
+  const onDragStart = (e, index) => {
+    setDraggedItem(agendaLines[index]);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/html", e.target.parentNode);
+    e.dataTransfer.setDragImage(e.target.parentNode, 20, 20);
+  };
+
+  const onDragOver = index => {
+    const draggedOverItem = agendaLines[index];
+
+    // if the item is dragged over itself, ignore
+    if (draggedItem === draggedOverItem) {
+      return;
+    }
+
+    reorderItems(index, draggedItem);
+  };
+
+  const style = {
+    cursor: "move"
+  };
+
   return (
-    <div>
-      <div className='pb-2'>
-        {agendaLines &&
-          agendaLines.map(item => {
-            let display = <DisplayOutlineItem item={item} />;
-            let highlight = <HighlightOutlineItem item={item} />;
-            let edit = <EditOutlineItem item={item} />;
-            return (
-              <EditableField
-                key={item.id}
-                item={item}
-                display={display}
-                highlight={highlight}
-                edit={edit}
-              />
-            );
-          })}
-      </div>
-      <button className='btn btn-primary btn-sm' onClick={addItem}>
-        <Icon name='plus' />
-      </button>
-    </div>
+    <Fragment>
+      {agendaLines &&
+        agendaLines.map((item, idx) => {
+          return (
+            <HighlightOutlineItem
+              item={item}
+              key={item.id}
+              onDragStart={e => onDragStart(e, idx)}
+              handleDragOver={() => onDragOver(idx)}
+            />
+          );
+        })}
+    </Fragment>
   );
 };
 

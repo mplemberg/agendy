@@ -8,39 +8,39 @@ const EditableField = ({ display, highlight, edit, item }) => {
   const {
     setActiveItem,
     clearActiveItem,
-    isEditingMode,
+    //isEditingMode,
     isHighlightingItem,
     isEditingItem
   } = agendasContext;
 
   let ref = useRef();
-  useOutsideClick(ref, () => {
+  /*useOutsideClick(ref, () => {
     if (isEditingMode()) {
       clearActiveItem();
     }
-  });
+  });*/
 
   let refProps = {};
-  if (isEditingMode()) {
-    refProps.ref = ref;
-  }
+  //if (isEditingMode()) {
+  refProps.ref = ref;
+  //}
 
   const mouseEnter = () => {
-    if (!isEditingMode()) {
-      setActiveItem(item.id, "highlighting");
-    }
+    //if (!isEditingMode()) {
+    setActiveItem(item.id, "highlighting");
+    //}
   };
 
   const mouseLeave = () => {
-    if (!isEditingMode()) {
-      clearActiveItem();
-    }
+    //if (!isEditingMode()) {
+    clearActiveItem();
+    //}
   };
 
   const handleClick = () => {
-    if (!isEditingMode()) {
-      setActiveItem(item.id, "editing");
-    }
+    //if (!isEditingMode()) {
+    setActiveItem(item.id, "editing");
+    //}
   };
 
   let content = display;
@@ -60,8 +60,8 @@ const EditableField = ({ display, highlight, edit, item }) => {
   return (
     <div
       onMouseEnter={mouseEnter}
-      onMouseLeave={mouseLeave}
-      onClick={handleClick}
+      //onMouseLeave={mouseLeave}
+      //onClick={handleClick}
       className={margin}
       {...refProps}
     >

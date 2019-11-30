@@ -7,6 +7,8 @@ import {
   REMOVE_OUTLINE_ITEM,
   ADD_OUTLINE_ITEM,
   SET_PENDING_SAVE,
+  SET_HOVERED_ITEM,
+  SET_EDITING_ITEM,
   SET_TITLE
 } from "../types";
 
@@ -33,11 +35,20 @@ export default (state, action) => {
         ...state,
         pendingSave: true
       };
-
     case SET_ACTIVE_ITEM:
       return {
         ...state,
         activeItem: action.payload
+      };
+    case SET_HOVERED_ITEM:
+      return {
+        ...state,
+        hoveredItem: action.payload
+      };
+    case SET_EDITING_ITEM:
+      return {
+        ...state,
+        editingItem: action.payload
       };
     case SET_ITEM_PROPERTY:
       item = state.agenda.agendaLines.find(i => {

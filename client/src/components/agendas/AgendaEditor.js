@@ -33,50 +33,63 @@ const AgendaEditor = ({ match }) => {
   const { name, agendaLines } = agenda;
   return (
     <main>
-      <div className='my-3'>
-        <div className='row'>
-          <div className='col-auto'>
-            <div className='h1'>
-              <TitleEditor title={name} />
+      <div className='row'>
+        <div className='col'>
+          <div className='row my-3'>
+            <div className='col-auto pr-0'>
+              <div
+                style={{
+                  width: "24px"
+                }}
+              ></div>
             </div>
-          </div>
-          <div className='col'>
-            {pendingSave && (
-              <Fragment>
-                <button className='btn btn-success' onClick={saveAgenda}>
-                  Save
-                </button>
-              </Fragment>
-            )}
+            <div className='col pl-1'>
+              <div className='row'>
+                <div className='col-auto'>
+                  <div className='h1'>
+                    <TitleEditor title={name} />
+                  </div>
+                </div>
+                <div className='col'>
+                  {pendingSave && (
+                    <Fragment>
+                      <button className='btn btn-success' onClick={saveAgenda}>
+                        Save
+                      </button>
+                    </Fragment>
+                  )}
 
-            {agenda.isPublishable && (
-              <button className='btn btn-dark' onClick={publishAgenda}>
-                Publish
-              </button>
-            )}
+                  {agenda.isPublishable && (
+                    <button className='btn btn-dark' onClick={publishAgenda}>
+                      {agenda.publishedDate ? "Publish Updates" : "Publish"}
+                    </button>
+                  )}
+                </div>
+              </div>
+              {agenda.savedDate && (
+                <div className='row'>
+                  <div className='col-auto'>
+                    <div className='small font-italic'>
+                      {" "}
+                      Last Saved: {agenda.savedDate}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {agenda.publishedDate && (
+                <div className='row'>
+                  <div className='col-auto'>
+                    <div className='small font-italic'>
+                      Last Published: {agenda.publishedDate}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
+          {agendaLines && <OutlineEditor />}
         </div>
-        {agenda.savedDate && (
-          <div className='row'>
-            <div className='col-auto'>
-              <div className='small font-italic'>
-                {" "}
-                Last Saved: {agenda.savedDate}
-              </div>
-            </div>
-          </div>
-        )}
-        {agenda.publishedDate && (
-          <div className='row'>
-            <div className='col-auto'>
-              <div className='small font-italic'>
-                Last Published: {agenda.publishedDate}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
-      {agendaLines && <OutlineEditor />}
     </main>
   );
 };

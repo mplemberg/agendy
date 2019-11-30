@@ -100,3 +100,7 @@ $breadcrumb-active-color: $breadcrumb-divider-color !default;
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
+
+input:focus {
+  outline: none;
+}

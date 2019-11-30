@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import EditableField from "./EditableField";
+//import EditableField from "./EditableField";
 import AgendasContext from "../../context/agendas/agendasContext";
 
 const TitleEditor = ({ title }) => {
@@ -26,16 +26,7 @@ const TitleEditor = ({ title }) => {
     />
   );
 
-  return (
-    <div>
-      <EditableField
-        item={{ id: "title" }}
-        display={display}
-        highlight={highlight}
-        edit={edit}
-      />
-    </div>
-  );
+  return <div>{edit}</div>;
 };
 
 export default TitleEditor;

@@ -7,17 +7,18 @@ import HighlightOutlineItem from "./HighlightOutlineItem";
 import EditOutlineItem from "./EditOutlineItem";
 const OutlineEditor = () => {
   const [draggedItem, setDraggedItem] = useState({});
-  const [draggedIdx, setDraggedIdx] = useState(null);
   const agendasContext = useContext(AgendasContext);
   const {
     agenda: { agendaLines },
     addItem,
     reorderItems,
     isHoveredItem,
-    setHoveredItem
+    setHoveredItem,
+    clearEditingItem
   } = agendasContext;
 
   const onDragStart = (e, index) => {
+    clearEditingItem();
     setDraggedItem(agendaLines[index]);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/html", e.target.parentNode);

@@ -12,31 +12,14 @@ const TitleEditor = ({ item }) => {
     setHoveredItem,
     isHovering,
     setEditingItem,
-    isEditingItem
+    isEditingItem,
+    isHi
   } = agendasContext;
   const onChange = e => {
     setTitle(e.target.value);
   };
 
-  let display = item.text;
-  let highlight = (
-    <div className='py-1'>
-      <span className='font-weight-bold p-2 border rounded'> {item.text} </span>
-    </div>
-  );
-
-  let edit = (
-    <input
-      autoFocus
-      type='text'
-      className='h1'
-      value={item.text || ""}
-      onChange={onChange}
-      size={item && item.text ? item.text.length : 4}
-    />
-  );
-
-  edit = (
+  let display = (
     <ContentEditable
       innerRef={ref}
       html={item.text || ""} // innerHTML of the editable div
@@ -44,10 +27,6 @@ const TitleEditor = ({ item }) => {
       onChange={onChange} // handle innerHTML change
     />
   );
-
-  if (isEditingItem(item)) {
-    display = edit;
-  }
 
   const handleMouseLeave = () => {
     if (isHovering()) {

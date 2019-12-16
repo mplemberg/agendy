@@ -129,7 +129,7 @@ const AgendasState = props => {
   };
 
   const isEditingItem = item => {
-    return state.editingItem === item;
+    return state.editingItem && item && state.editingItem.id === item.id;
   };
 
   const setHoveredItem = item => {

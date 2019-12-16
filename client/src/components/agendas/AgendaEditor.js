@@ -31,6 +31,7 @@ const AgendaEditor = ({ match }) => {
   if (loading) return <Spinner />;
 
   const { name, agendaLines } = agenda;
+  const titleItem = { id: "title", text: name };
   return (
     <main>
       <div className='row'>
@@ -46,9 +47,7 @@ const AgendaEditor = ({ match }) => {
             <div className='col pl-1'>
               <div className='row'>
                 <div className='col-auto'>
-                  <div className='h1'>
-                    <TitleEditor title={name} />
-                  </div>
+                  <TitleEditor item={titleItem} />
                 </div>
                 <div className='col'>
                   {pendingSave && (

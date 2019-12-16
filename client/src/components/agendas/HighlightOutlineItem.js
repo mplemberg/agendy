@@ -91,6 +91,7 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
           type='text'
           value={item.text || ""}
           onChange={onChange}
+          size={item && item.text ? item.text.length : 4}
         />
       </KeyboardEventHandler>
     );

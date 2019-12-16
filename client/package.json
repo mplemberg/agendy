@@ -8,6 +8,7 @@
     "node-sass": "^4.13.0",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.14",
+    "react-contenteditable": "^3.3.3",
     "react-dom": "^16.11.0",
     "react-fontawesome": "^1.7.1",
     "react-keyboard-event-handler": "^1.5.2",

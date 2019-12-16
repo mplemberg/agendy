@@ -279,7 +279,7 @@ const AgendasState = props => {
         agenda: state.agenda,
         loading: state.loading,
         pendingSave: state.pendingSave,
-        activeItem: state.activeItem,
+        editingItem: state.editingItem,
         saveAgenda,
         loadAgenda,
         loadDraft,

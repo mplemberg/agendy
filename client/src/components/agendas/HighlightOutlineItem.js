@@ -2,9 +2,11 @@ import React from "react";
 import Icon from "react-fontawesome";
 import AgendasContext from "../../context/agendas/agendasContext";
 import KeyboardEventHandler from "react-keyboard-event-handler";
+import ContentEditable from "react-contenteditable";
 
 const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
   const agendasContext = React.useContext(AgendasContext);
+  const ref = React.useRef();
 
   const {
     setActiveItem,
@@ -22,8 +24,18 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
     removeItem,
     isHovering,
     clearHoveredItem,
-    addNewAfter
+    addNewAfter,
+    editingItem
   } = agendasContext;
+
+  const isHoveringOverCurrentItem = isHoveredItem(item);
+  const isEditingCurrentItem = isEditingItem(item);
+  React.useEffect(() => {
+    if (isEditingCurrentItem) {
+      ref.current.focus();
+    }
+    // eslint-disable-next-line
+  }, [editingItem]);
 
   const handleClick = () => {
     setEditingItem(item);
@@ -67,8 +79,9 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
       clearHoveredItem();
     }
   };
+
   let textContent = item.text;
-  if (isEditingItem(item)) {
+  if (isHoveringOverCurrentItem || isEditingCurrentItem) {
     textContent = (
       <KeyboardEventHandler
         handleKeys={["tab", "shift+tab", "enter", "backspace"]}
@@ -84,14 +97,13 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
           }
         }}
       >
-        <input
-          className=''
-          autoFocus
-          style={{ boxShadow: "none", border: "none", boxSizing: "none" }}
-          type='text'
-          value={item.text || ""}
-          onChange={onChange}
-          size={item && item.text ? item.text.length : 4}
+        <ContentEditable
+          innerRef={ref}
+          html={item.text || ""} // innerHTML of the editable div
+          disabled={false} // use true to disable editing
+          onChange={onChange} // handle innerHTML change
+          tagName='span'
+          onClick={setEditingItem}
         />
       </KeyboardEventHandler>
     );
@@ -104,8 +116,6 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
     margin = "ml-5";
   }
 
-  const isHoveringOverCurrentItem = isHoveredItem(item);
-  const isEditingCurrentItem = isEditingItem(item);
   return (
     <div
       className='row'

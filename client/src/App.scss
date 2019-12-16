@@ -101,20 +101,6 @@ $breadcrumb-active-color: $breadcrumb-divider-color !default;
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
 
-input.h1 {
-  margin-bottom: $headings-margin-bottom;
-  font-family: $headings-font-family;
-  font-weight: $headings-font-weight;
-  line-height: $headings-line-height;
-  color: $headings-color;
-  @include font-size($h1-font-size);
-
-  box-shadow: none;
-  border: none;
-  box-sizing: none;
-  border-style: none;
-}
-
 [contenteditable]:focus {
   outline: 0px solid transparent;
 }

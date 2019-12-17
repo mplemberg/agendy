@@ -44,22 +44,39 @@ const AgendaEditor = ({ match }) => {
       "/agenda/view/" +
       agenda.viewCode;
   }
+
+  const leftColumnSpacer = (
+    <div className='col-auto pr-0'>
+      {
+        //This is needed to line all the text up and have the drag icon to the left
+      }
+      <div
+        style={{
+          width: "24px"
+        }}
+      ></div>
+    </div>
+  );
+
+  const leftColumnSpacerMobileOnly = (
+    <div className='d-lg-none col-auto pr-0'>
+      {
+        //This is needed to line all the text up and have the drag icon to the left
+      }
+      <div
+        style={{
+          width: "24px"
+        }}
+      ></div>
+    </div>
+  );
   const titleItem = { id: "title", text: name };
   return (
     <main>
       <div className='row'>
         <div className='col col-lg-8'>
           <div className='row my-3'>
-            <div className='col-auto pr-0'>
-              {
-                //This is needed to line all the text up and have the drag icon to the left
-              }
-              <div
-                style={{
-                  width: "24px"
-                }}
-              ></div>
-            </div>
+            {leftColumnSpacer}
             <div className='col pl-1'>
               <div className='row'>
                 <div className='col-auto'>
@@ -113,26 +130,38 @@ const AgendaEditor = ({ match }) => {
           )}
         </div>
         {viewUrl && (
-          <div className='col col-lg-4 my-3'>
-            <div className='card w-100'>
-              <div className='card-body bg-light'>
-                <span className='font-weight-bold'>Share </span>
-                <CopyToClipboard
-                  text={viewUrl}
-                  onCopy={() =>
-                    alertContext.setAlert("Copied to Clipboard", "primary")
-                  }
-                >
-                  <button
-                    className='btn btn-sm btn-info'
-                    onClick={publishAgenda}
-                  >
-                    <Icon name='copy' />
-                  </button>
-                </CopyToClipboard>
-                <a href='#'>
-                  <small>{viewUrl}</small>
-                </a>
+          <div className='col col-lg-4'>
+            <div className='row my-3'>
+              {leftColumnSpacerMobileOnly}
+              <div className='col'>
+                <div className='row'>
+                  <div className='border border-light rounded bg-light p-1 mt-5 mt-lg-0'>
+                    <span className='font-weight-bold'>Share </span>
+                    <CopyToClipboard
+                      text={viewUrl}
+                      onCopy={() =>
+                        alertContext.setAlert("Copied to Clipboard", "primary")
+                      }
+                    >
+                      <button
+                        className='btn btn-sm btn-info'
+                        onClick={publishAgenda}
+                      >
+                        <Icon name='copy' />
+                      </button>
+                    </CopyToClipboard>
+                    <a href='#'>
+                      <span
+                        className='d-block text-truncate'
+                        style={{
+                          maxWidth: "400px"
+                        }}
+                      >
+                        {viewUrl}
+                      </span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

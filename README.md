@@ -80,3 +80,4 @@ And then either run `npm run debug` or `npm run debug-server`
 
 From root
 heroku login
+git push heroku master

@@ -75,3 +75,8 @@ Follow this step:
 https://itnext.io/the-absolute-easiest-way-to-debug-node-js-with-vscode-2e02ef5b1bad
 
 And then either run `npm run debug` or `npm run debug-server`
+
+### Deploying to Heroku
+
+From root
+heroku login

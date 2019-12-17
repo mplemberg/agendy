@@ -12,6 +12,7 @@ const uuidv4 = () => {
 const setPublishable = (agendaView, agenda) => {
   if (
     !agenda.publishedVersion ||
+    !agenda.publishedVersion.savedDate ||
     agenda.publishedVersion.savedDate.toUTCString() !==
       agenda.draftVersion.savedDate.toUTCString()
   ) {

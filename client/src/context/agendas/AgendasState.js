@@ -38,8 +38,8 @@ const AgendasState = props => {
 
   const apiClient = new HippidyApiClient("");
 
-  const getNewItem = () => {
-    return { id: uuidv4(), text: "", indent: 0 };
+  const getNewItem = (indent = 0) => {
+    return { id: uuidv4(), text: "", indent: indent };
   };
 
   const saveAgenda = async () => {
@@ -182,7 +182,7 @@ const AgendasState = props => {
   const addNewAfter = item => {
     setPendingSave();
     const currentIndex = agendaLines.indexOf(item);
-    let newItem = getNewItem();
+    let newItem = getNewItem(item.indent);
     agendaLines.splice(currentIndex + 1, 0, newItem);
     dispatch({
       type: SET_OUTLINE_ITEMS,

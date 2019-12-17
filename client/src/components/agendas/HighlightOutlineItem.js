@@ -3,6 +3,7 @@ import Icon from "react-fontawesome";
 import AgendasContext from "../../context/agendas/agendasContext";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import ContentEditable from "react-contenteditable";
+import BulletIcon from "./BulletIcon";
 
 const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
   const agendasContext = React.useContext(AgendasContext);
@@ -146,8 +147,8 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
       </div>
       <div className='col pl-1'>
         <div className={`form-row ${margin}`}>
-          <div className='col-auto'>&bull;</div>
           <div className='col-auto'>
+            <BulletIcon indent={item.indent} />
             <span
               style={{
                 cursor: "text"

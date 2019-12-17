@@ -150,7 +150,7 @@ const AgendaEditor = ({ match }) => {
                         <Icon name='copy' />
                       </button>
                     </CopyToClipboard>
-                    <a href='#'>
+                    <a href={viewUrl}>
                       <span
                         className='d-block text-truncate'
                         style={{

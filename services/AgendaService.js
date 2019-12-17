@@ -24,7 +24,8 @@ const buildDraftViewFromModel = agenda => {
     name: agenda.draftVersion.name,
     agendaLines: agenda.draftVersion.agendaLines,
     savedDate: agenda.draftVersion.savedDate,
-    publishedDate: agenda.publishedDate
+    publishedDate: agenda.publishedDate,
+    viewCode: agenda.viewCode
   };
 
   setPublishable(agendaView, agenda);

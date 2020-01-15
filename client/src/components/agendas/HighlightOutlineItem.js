@@ -60,7 +60,9 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
   };
 
   const onChange = e => {
-    setItemProperty(item.id, "text", e.target.value);
+    const value =
+      e.target.value == "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ? "" : e.target.value;
+    setItemProperty(item.id, "text", value);
   };
 
   const handleTab = e => {
@@ -113,11 +115,12 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
       >
         <ContentEditable
           innerRef={ref}
-          html={item.text || ""} // innerHTML of the editable div
+          html={item.text} // innerHTML of the editable div
           disabled={false} // use true to disable editing
           onChange={onChange} // handle innerHTML change
           tagName='span'
           onClick={setEditingItem}
+          className={isHoveringOverCurrentItem && !item.text ? "pr-4" : ""}
         />
       </KeyboardEventHandler>
     );

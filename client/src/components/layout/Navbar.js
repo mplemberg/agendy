@@ -9,7 +9,7 @@ const Navbar = ({ icon, title }) => {
       <div className='container'>
         <Link to='/' className='navbar-brand'>
           <img
-            src='/logo2.png'
+            src='/logo3.png'
             alt={title}
             style={{
               width: "92px",

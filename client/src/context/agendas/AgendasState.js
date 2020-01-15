@@ -179,6 +179,19 @@ const AgendasState = props => {
     });
   };
 
+  const moveItemDown = item => {
+    setPendingSave();
+    const from = agendaLines.indexOf(item);
+    const to = from + 1;
+
+    agendaLines.splice(to, 0, agendaLines.splice(from, 1)[0]);
+
+    dispatch({
+      type: SET_OUTLINE_ITEMS,
+      payload: agendaLines
+    });
+  };
+
   const addNewAfter = item => {
     setPendingSave();
     const currentIndex = agendaLines.indexOf(item);
@@ -201,18 +214,6 @@ const AgendasState = props => {
     dispatch({
       type: SET_OUTLINE_ITEMS,
       payload: newAgendaLines
-    });
-  };
-  const moveItemDown = item => {
-    setPendingSave();
-    const from = agendaLines.indexOf(item);
-    const to = from + 1;
-
-    agendaLines.items.splice(to, 0, agendaLines.items.splice(from, 1)[0]);
-
-    dispatch({
-      type: SET_OUTLINE_ITEMS,
-      payload: agendaLines
     });
   };
 

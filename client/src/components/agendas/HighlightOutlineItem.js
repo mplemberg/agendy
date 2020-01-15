@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Icon from "react-fontawesome";
 import AgendasContext from "../../context/agendas/agendasContext";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import ContentEditable from "react-contenteditable";
 import BulletIcon from "./BulletIcon";
+import { isBrowser, isMobile } from "react-device-detect";
 
 const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
   const agendasContext = React.useContext(AgendasContext);
@@ -26,9 +27,13 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
     isHovering,
     clearHoveredItem,
     addNewAfter,
-    editingItem
+    editingItem,
+    moveItemUp,
+    moveItemDown
   } = agendasContext;
 
+  let test1 = isBrowser;
+  let test2 = isMobile;
   const isHoveringOverCurrentItem = isHoveredItem(item);
   const isEditingCurrentItem = isEditingItem(item);
   React.useEffect(() => {
@@ -40,6 +45,14 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
 
   const handleClick = () => {
     setEditingItem(item);
+  };
+
+  const handleUpBtn = () => {
+    moveItemUp(item);
+  };
+
+  const handleDownBtn = () => {
+    moveItemDown(item);
   };
 
   const mouseEnter = () => {
@@ -130,7 +143,7 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
             width: "24px"
           }}
         >
-          {isHoveringOverCurrentItem && (
+          {isBrowser && isHoveringOverCurrentItem && (
             <span
               className='border rounded px-1'
               style={{
@@ -158,6 +171,26 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
             >
               {textContent}
             </span>
+
+            {isMobile && (isHoveringOverCurrentItem || isEditingCurrentItem) && (
+              <Fragment>
+                <button
+                  type='button'
+                  className='btn btn-sm btn-outline-primary border-0 ml-2didn'
+                  onClick={handleUpBtn}
+                >
+                  <Icon name='arrow-up' />
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-sm btn-primary'
+                  onClick={handleDownBtn}
+                >
+                  Down
+                </button>
+              </Fragment>
+            )}
+
             {(isHoveringOverCurrentItem || isEditingCurrentItem) && (
               <button
                 type='button'

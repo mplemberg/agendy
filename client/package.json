@@ -14,6 +14,7 @@
     "react-bootstrap": "^1.0.0-beta.14",
     "react-contenteditable": "^3.3.3",
     "react-copy-to-clipboard": "^5.0.2",
+    "react-device-detect": "^1.11.14",
     "react-dom": "^16.11.0",
     "react-fontawesome": "^1.7.1",
     "react-keyboard-event-handler": "^1.5.2",

@@ -60,9 +60,7 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
   };
 
   const onChange = e => {
-    const value =
-      e.target.value == "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ? "" : e.target.value;
-    setItemProperty(item.id, "text", value);
+    setItemProperty(item.id, "text", e.target.value);
   };
 
   const handleTab = e => {
@@ -179,17 +177,17 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
               <Fragment>
                 <button
                   type='button'
-                  className='btn btn-sm btn-outline-primary border-0 ml-2didn'
+                  className='btn btn-outline-primary border-0'
                   onClick={handleUpBtn}
                 >
                   <Icon name='arrow-up' />
                 </button>
                 <button
                   type='button'
-                  className='btn btn-sm btn-primary'
+                  className='btn btn-outline-primary border-0'
                   onClick={handleDownBtn}
                 >
-                  Down
+                  <Icon name='arrow-down' />
                 </button>
               </Fragment>
             )}

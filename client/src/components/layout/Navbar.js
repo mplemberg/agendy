@@ -17,9 +17,6 @@ const Navbar = ({ icon, title }) => {
             }}
           />
         </Link>
-        <button className='navbar-toggler' type='button'>
-          <span className='navbar-toggler-icon'></span>
-        </button>
 
         <div className='collapse navbar-collapse'>
           <ul className='navbar-nav ml-auto'>

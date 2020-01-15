@@ -3,6 +3,7 @@ import Spinner from "../layout/Spinner";
 import AgendasContext from "../../context/agendas/agendasContext";
 import OutlineViewer from "./OutlineViewer";
 import Icon from "react-fontawesome";
+import { AgendaDate } from "./AgendaDate";
 
 const AgendaViewer = ({ match }) => {
   const agendasContext = useContext(AgendasContext);
@@ -46,7 +47,7 @@ const AgendaViewer = ({ match }) => {
                 <div className='row'>
                   <div className='col-auto'>
                     <div className='small font-italic'>
-                      Last Updated: {agenda.publishedDate}
+                      Last Updated: <AgendaDate date={agenda.publishedDate} />
                     </div>
                   </div>
                 </div>

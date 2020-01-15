@@ -2,7 +2,7 @@ import React, { useEffect, Fragment, useContext } from "react";
 import Spinner from "../layout/Spinner";
 import AgendasContext from "../../context/agendas/agendasContext";
 import OutlineViewer from "../agendas/OutlineViewer";
-
+import { AgendaDate } from "../agendas/AgendaDate";
 const About = ({ match }) => {
   const agendasContext = useContext(AgendasContext);
 
@@ -44,7 +44,7 @@ const About = ({ match }) => {
                 <div className='row'>
                   <div className='col-auto'>
                     <div className='small font-italic'>
-                      Last Updated: {agenda.publishedDate}
+                      Last Updated: <AgendaDate date={agenda.publishedDate} />
                     </div>
                   </div>
                 </div>

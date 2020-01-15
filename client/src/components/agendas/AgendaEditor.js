@@ -7,7 +7,7 @@ import OutlineEditor from "./OutlineEditor";
 import TitleEditor from "./TitleEditor";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Icon from "react-fontawesome";
-
+import { AgendaDate } from "./AgendaDate";
 const AgendaEditor = ({ match }) => {
   const agendasContext = useContext(AgendasContext);
   const alertContext = useContext(AlertContext);
@@ -105,7 +105,7 @@ const AgendaEditor = ({ match }) => {
                   <div className='col-auto'>
                     <div className='small font-italic'>
                       {" "}
-                      Last Saved: {agenda.savedDate}
+                      Last Saved: <AgendaDate date={agenda.savedDate} />
                     </div>
                   </div>
                 </div>
@@ -114,7 +114,7 @@ const AgendaEditor = ({ match }) => {
                 <div className='row'>
                   <div className='col-auto'>
                     <div className='small font-italic'>
-                      Last Published: {agenda.publishedDate}
+                      Last Published: <AgendaDate date={agenda.publishedDate} />
                     </div>
                   </div>
                 </div>

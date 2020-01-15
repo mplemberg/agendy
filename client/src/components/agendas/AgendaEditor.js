@@ -85,19 +85,27 @@ const AgendaEditor = ({ match }) => {
               </div>
               <div className='row'>
                 <div className='col'>
-                  {pendingSave && (
+                  {
                     <Fragment>
-                      <button className='btn btn-success' onClick={saveAgenda}>
+                      <button
+                        className='btn btn-sm btn-dark mr-2'
+                        onClick={saveAgenda}
+                        disabled={!pendingSave}
+                      >
                         Save
                       </button>
                     </Fragment>
-                  )}
+                  }
 
-                  {agenda.isPublishable && (
-                    <button className='btn btn-dark' onClick={publishAgenda}>
+                  {
+                    <button
+                      className='btn btn-sm btn-primary'
+                      onClick={publishAgenda}
+                      disabled={!agenda.isPublishable}
+                    >
                       {agenda.publishedDate ? "Publish Updates" : "Publish"}
                     </button>
-                  )}
+                  }
                 </div>
               </div>
               {agenda.savedDate && (

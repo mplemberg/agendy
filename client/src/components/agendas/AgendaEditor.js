@@ -71,6 +71,13 @@ const AgendaEditor = ({ match }) => {
     </div>
   );
   const titleItem = { id: "title", text: name };
+
+  const handlePublish = async () => {
+    if (pendingSave) {
+      await saveAgenda();
+    }
+    await publishAgenda();
+  };
   return (
     <main>
       <div className='row'>
@@ -100,10 +107,10 @@ const AgendaEditor = ({ match }) => {
                   {
                     <button
                       className='btn btn-sm btn-primary'
-                      onClick={publishAgenda}
-                      disabled={!agenda.isPublishable}
+                      onClick={handlePublish}
+                      disabled={!pendingSave && !agenda.isPublishable}
                     >
-                      {agenda.publishedDate ? "Publish Updates" : "Publish"}
+                      {pendingSave ? "Save & Publish" : "Publish"}
                     </button>
                   }
                 </div>

@@ -4,6 +4,7 @@ import AgendasContext from "../../context/agendas/agendasContext";
 import OutlineViewer from "./OutlineViewer";
 import Icon from "react-fontawesome";
 import { AgendaDate } from "./AgendaDate";
+import ReactGA from "react-ga";
 
 const AgendaViewer = ({ match }) => {
   const agendasContext = useContext(AgendasContext);
@@ -12,6 +13,7 @@ const AgendaViewer = ({ match }) => {
 
   useEffect(() => {
     if (match.params.viewCode) {
+      ReactGA.pageview(window.location.pathname + window.location.search);
       loadAgenda(match.params.viewCode, "view");
     }
     // eslint-disable-next-line

@@ -17,6 +17,8 @@ import AgendaViewer from "./components/agendas/AgendaViewer";
 import AgendasState from "./context/agendas/AgendasState";
 //import "./App.css";
 import "./App.scss";
+import ReactGA from "react-ga";
+ReactGA.initialize("UA-156536817-1");
 const App = () => {
   return (
     <GithubState>

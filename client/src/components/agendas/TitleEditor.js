@@ -25,6 +25,7 @@ const TitleEditor = ({ item }) => {
       html={item.text || ""} // innerHTML of the editable div
       disabled={false} // use true to disable editing
       onChange={onChange} // handle innerHTML change
+      className={isHovering() && !item.text ? "pr-5" : ""}
     />
   );
 
@@ -39,6 +40,9 @@ const TitleEditor = ({ item }) => {
   };
 
   const handleClick = () => {
+    if (item.text && item.text.toLowerCase() == "untitled") {
+      setTitle("");
+    }
     setEditingItem(item);
   };
 

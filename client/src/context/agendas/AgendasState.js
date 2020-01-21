@@ -106,7 +106,7 @@ const AgendasState = props => {
         agendaLines: [
           {
             id: 1,
-            text: "Untitled"
+            text: ""
           }
         ]
       }

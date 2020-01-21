@@ -6,7 +6,12 @@ import ContentEditable from "react-contenteditable";
 import BulletIcon from "./BulletIcon";
 import { isBrowser, isMobile } from "react-device-detect";
 
-const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
+const HighlightOutlineItem = ({
+  item,
+  onDragStart,
+  handleDragOver,
+  canDelete
+}) => {
   const agendasContext = React.useContext(AgendasContext);
   const ref = React.useRef();
 
@@ -192,7 +197,7 @@ const HighlightOutlineItem = ({ item, onDragStart, handleDragOver }) => {
               </Fragment>
             )}
 
-            {(isHoveringOverCurrentItem || isEditingCurrentItem) && (
+            {canDelete && (isHoveringOverCurrentItem || isEditingCurrentItem) && (
               <button
                 type='button'
                 className='close pl-2'

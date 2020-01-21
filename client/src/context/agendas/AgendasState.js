@@ -238,15 +238,17 @@ const AgendasState = props => {
   };
 
   const removeItem = item => {
-    setPendingSave();
-    const index = agendaLines.indexOf(item);
-    const newlyFocusedItem = agendaLines[index - 1];
-    dispatch({
-      type: REMOVE_OUTLINE_ITEM,
-      payload: index
-    });
-    setHoveredItem(newlyFocusedItem);
-    setEditingItem(newlyFocusedItem);
+    if (agendaLines.length > 1) {
+      setPendingSave();
+      const index = agendaLines.indexOf(item);
+      const newlyFocusedItem = agendaLines[index - 1];
+      dispatch({
+        type: REMOVE_OUTLINE_ITEM,
+        payload: index
+      });
+      setHoveredItem(newlyFocusedItem);
+      setEditingItem(newlyFocusedItem);
+    }
   };
 
   const uuidv4 = () => {

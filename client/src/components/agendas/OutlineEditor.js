@@ -50,6 +50,7 @@ const OutlineEditor = () => {
               key={item.id}
               onDragStart={e => onDragStart(e, idx)}
               handleDragOver={() => onDragOver(idx)}
+              canDelete={agendaLines.length > 1}
             />
           );
         })}

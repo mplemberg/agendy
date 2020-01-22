@@ -61,18 +61,29 @@ const AgendasState = props => {
       if (isDraft) {
         history.push(`/agenda/edit/${result.data.editCode}`);
       }
+
+      return result.data;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const publishAgenda = async () => {
+  const publishAgenda = async (id = null) => {
     try {
-      const result = await apiClient.publishDraftAgenda(agenda.id);
+      const result = await apiClient.publishDraftAgenda(id ? id : agenda.id);
       dispatch({
         type: LOAD_AGENDA,
         payload: result.data
       });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveAndPublishAgenda = async () => {
+    try {
+      const newAgenda = await saveAgenda();
+      await publishAgenda(newAgenda.id);
     } catch (error) {
       console.error(error);
     }
@@ -306,7 +317,8 @@ const AgendasState = props => {
         reorderItems,
         moveLeft,
         moveRight,
-        addNewAfter
+        addNewAfter,
+        saveAndPublishAgenda
       }}
     >
       {props.children}

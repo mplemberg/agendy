@@ -19,7 +19,8 @@ const AgendaEditor = ({ match }) => {
     saveAgenda,
     agenda,
     pendingSave,
-    publishAgenda
+    publishAgenda,
+    saveAndPublishAgenda
   } = agendasContext;
 
   useEffect(() => {
@@ -74,9 +75,10 @@ const AgendaEditor = ({ match }) => {
 
   const handlePublish = async () => {
     if (pendingSave) {
-      await saveAgenda();
+      await saveAndPublishAgenda();
+    } else {
+      await publishAgenda();
     }
-    await publishAgenda();
   };
   return (
     <main>
